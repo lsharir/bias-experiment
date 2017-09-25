@@ -40,17 +40,24 @@
   text-align: center;
 }
 
-.p5-container {
-  flex-grow: 1;
+.question-content-block {
+  flex-grow: 2;
   width: 100%;
-  background: rgba(255,0,0,0.25);
+  text-align: center;
+  height: 50vh;
 }
 
-.hidden-joke {
-  transition: all 5s ease-in-out;
-  opacity: 0;
+.question-answer {
+  padding: 1.5rem 2rem;
+  max-width: 26rem;
+  margin: 1rem auto;
+  background: #FAFAFA;
 }
 
-.hidden-joke.show {
-  opacity: 1;
+.bias-box {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 1rem;
+  background: #FAFAFA;
 }

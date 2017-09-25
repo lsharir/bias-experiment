@@ -1,17 +1,47 @@
-var NUM_OF_QUESTIONS = 4;
-
 var app = angular.module("experimentApp", ["firebase"])
   .constant('PHASES', {
-    'SHOW_INSTRUCTIONS': 'SHOW_INSTRUCTIONS',
-    'SHOW_TASK': 'SHOW_TASK',
+    'SHOW_QUESTION_ONLY': 'SHOW_QUESTION_ONLY',
+    'SHOW_QUESTION_FULL': 'SHOW_QUESTION_FULL',
     'TIMEOUT': 'TIMEOUT',
     'ANSWERED': 'ANSWERED'
   })
   .constant('QUESTIONS', [
-    { instructions: 'Touch the triangle', task : task1 },
-    { instructions: 'Touch the blue circle', task: task2  },
-    { instructions: 'Touch the blue triangle', task: task3  },
-    { instructions: 'Touch the blue triangle', task: task4  }
+    { 
+      unbiased: {
+        text: 'What is more likely to kill you?'
+      },
+      biased: {
+        text: 'What is more likely to kill you',
+        image: 'images/availability_bias.jpg'
+      },
+      answers : [
+         'Your dog', 'Your furniture'
+      ] 
+    },
+    { 
+      unbiased: {
+        text: 'What is more likely to kill you?'
+      },
+      biased: {
+        text: 'What is more likely to kill you',
+        image: 'images/availability_bias.jpg'
+      },
+      answers : [
+         'Your dog', 'Your furniture'
+      ] 
+    },
+    { 
+      unbiased: {
+        text: 'What is more likely to kill you?'
+      },
+      biased: {
+        text: 'What is more likely to kill you',
+        image: 'images/availability_bias.jpg'
+      },
+      answers : [
+         'Your dog', 'Your furniture'
+      ] 
+    }
   ])
   .controller('experimentCtrl', function ($scope, $timeout, $firebaseArray, PHASES, QUESTIONS) {
     var ref = firebase.database().ref().child('results'),
@@ -31,11 +61,13 @@ var app = angular.module("experimentApp", ["firebase"])
     };
 
     function nextQuestion() {
+      $scope.bias = Math.random() > 0.5;
+
       // Question navigation logic
       if (isNaN($scope.currentQuestion)) {
         $scope.currentQuestion = 0;
       } else {
-        if ($scope.currentQuestion >= NUM_OF_QUESTIONS - 1) {
+        if ($scope.currentQuestion >= QUESTIONS.length - 1) {
           return completed();
         }
 
@@ -43,47 +75,38 @@ var app = angular.module("experimentApp", ["firebase"])
       }
 
       // Start with instruction phase
-      $scope.questionPhase = PHASES.SHOW_INSTRUCTIONS;
+      $scope.questionPhase = PHASES.SHOW_QUESTION_ONLY;
 
       // Go to task phase after 5 seconds
       $timeout(function () {
         // Actually call the task
-        var task = new p5(QUESTIONS[$scope.currentQuestion].task);
+        var question = QUESTIONS[$scope.currentQuestion]
 
         // Updated the question phase
-        $scope.questionPhase = PHASES.SHOW_TASK;
-
-        // Handle task responses
-        task.addListener(function (response) {
-          answerQuestion($scope.currentQuestion, { valid : response.valid, delta: response.delta });
-        });
+        $scope.questionPhase = PHASES.SHOW_QUESTION_FULL;
 
         // Task phase timeout
         questionTimeout = $timeout(function () {
           $scope.questionPhase = PHASES.TIMEOUT;
-          task.answer({ valid : false, delta : -1 });
+          $scope.answerQuestion(-1);
         }, 10 * 1000);
       }, 5 * 1000);
     }
 
-    function answerQuestion(qIndex, response) {
+    $scope.answerQuestion = function(qIndex) {
       // Update question phase
       $scope.questionPhase = PHASES.ANSWERED;
       // Cancel task timeout
       $timeout.cancel(questionTimeout);
       // Record response
-      responses[qIndex] = response;
+      responses.push([qIndex, $scope.bias]);
       // Call nextQuestion (wrapped in $apply - answerQuestion is called outside angular)
-      $scope.$apply(nextQuestion);
+      nextQuestion();
     }
 
     function completed() {
       $scope.totalTime = Date.now() - startTime;
       $scope.completed = true;
-
-      $timeout(function () {
-        $scope.joke = true;
-      }, 5000);
 
       resultsDatabaseRef.$add({
         responses: responses,

@@ -13,21 +13,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angularFire/2.3.0/angularfire.min.js"></script>
   <script>
     var config = {
-      apiKey: "AIzaSyAobS5XYKXVRZP9LsRLRIFzQ8iydAKLX08",
-      authDomain: "preattentive-processing.firebaseapp.com",
-      databaseURL: "https://preattentive-processing.firebaseio.com",
-      projectId: "preattentive-processing",
-      storageBucket: "preattentive-processing.appspot.com",
-      messagingSenderId: "884929685567"
+      apiKey: "AIzaSyC1534gzPxYhE5Vr_T4RdYujjD8cGoAIyg",
+      authDomain: "bias-experiment.firebaseapp.com",
+      databaseURL: "https://bias-experiment.firebaseio.com",
+      projectId: "bias-experiment",
+      storageBucket: "",
+      messagingSenderId: "1051246777152"
     };
     firebase.initializeApp(config);
   </script>
 
-  <script src="shape-generator.js"></script>
-  <script src="task1.js"></script>
-  <script src="task2.js"></script>
-  <script src="task3.js"></script>
-  <script src="task4.js"></script>
   <script src="script.js"></script>
 
 
@@ -42,16 +37,38 @@
   <div class="screen" ng-if="!began" ng-click="beginQuestionnaire()">
     <div class="question-wrapper">
       <div class="question-text">Click/touch anywhere when ready</div>
-      <div class="question-title">Complete the next 4 tasks, as fast as you can. Instructions will show for 5 seconds before each task. Complete a task
-        by identifying the target and simply touch\click\tap it.</div>
+      <div class="question-title">
+        Answer each of the following question.
+        Questions will show for 5 seconds before answers are available. 
+        Answers will be available for selection for 10 seconds, provide your best, fast estimate of a correct answer. 
+        Simply touch\click\tap your selected answer.
+      </div>
     </div>
   </div>
 
+  <div class="bias-box">{{bias}}</div>
+
   <div class="screen" ng-if="!completed && began">
-    <div class="question-wrapper" ng-if="questionPhase === 'SHOW_INSTRUCTIONS'">
-      <div class="question-text">{{ QUESTIONS[currentQuestion].instructions }}</div>
-      <div class="question-title">Question {{currentQuestion + 1}}/4</div>
+    <div class="question-wrapper" ng-if="questionPhase === 'SHOW_QUESTION_ONLY'">
+      <div class="question-text">{{ bias ? QUESTIONS[currentQuestion].biased.text : QUESTIONS[currentQuestion].unbiased.text }}</div>
+      <div class="question-content-block">
+        <img ng-if="bias && QUESTIONS[currentQuestion].biased.image" ng-src="{{QUESTIONS[currentQuestion].biased.image}}">
+        <img ng-if="!bias && QUESTIONS[currentQuestion].unbiased.image" ng-src="{{QUESTIONS[currentQuestion].unbiased.image}}">
+      </div>
+      <div class="question-title">Question {{currentQuestion + 1}}/{{QUESTIONS.length}}</div>
     </div>
+
+    <div class="question-wrapper" ng-if="questionPhase === 'SHOW_QUESTION_FULL'">
+        <div class="question-text">{{ bias ? QUESTIONS[currentQuestion].biased.text : QUESTIONS[currentQuestion].unbiased.text }}</div>
+        <div class="question-content-block">
+            <div class="question-answer" 
+              ng-repeat="answer in QUESTIONS[currentQuestion].answers track by $index" 
+              ng-click="answerQuestion($index)">
+              {{answer}}
+            </div>
+        </div>
+        <div class="question-title">Question {{currentQuestion + 1}}/{{QUESTIONS.length}}</div>
+      </div>
   </div>
 
   <div class="screen" ng-if="completed">
@@ -61,8 +78,7 @@
     <div class="question-wrapper">
       <div class="question-text">Your total time was {{totalTime / 1000 }} seconds</div>
       <div class="question-title">
-        <div>Woah! That was fast! You performed better than everyone in the class!</div>
-        <div class="hidden-joke" ng-class="{ 'show' : joke }">(Not really, but we thought it will cheer you up for a little bit)</div>
+        <div>You are less prone to bias than 77% of the class</div>
       </div>
     </div>
   </div>
