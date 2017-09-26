@@ -22,11 +22,11 @@
     };
     firebase.initializeApp(config);
   </script>
-  <script src="../questions.js"></script>
-  <script src="pie-chart.js"></script>
-  <script src="script.js"></script>
+  <script src="questions.js"></script>
+  <script src="results/pie-chart.js"></script>
+  <script src="results/results-script.js"></script>
   <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="results/results-style.css">
   <title>Results</title>
 </head>
 
@@ -38,13 +38,13 @@
   <h2>Biased version - {{results[selectedQuestionIndex].biased.length}} subjects</h2>
   <div class="question-body">
     <span>{{selectedQuestion.biased.text}}</span>
-    <img ng-src="{{selectedQuestion.unbiased.image}}">
+    <img src="{{selectedQuestion.biased.image ? selectedQuestion.biased.image : ''}}">
   </div>
   <svg id="biased" class="pies"></svg>
   <h2>Biased removed version - {{results[selectedQuestionIndex].unbiased.length}} subjects</h2>
   <div class="question-body">
     <span>{{selectedQuestion.unbiased.text}}</span>
-    <img ng-src="{{selectedQuestion.unbiased.image}}">
+    <img src="{{selectedQuestion.unbiased.image ? selectedQuestion.unbiased.image : ''}}">
   </div>
   <svg id="unbiased" class="pies"></svg>
 

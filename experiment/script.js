@@ -56,8 +56,8 @@ var app = angular.module("experimentApp", ["firebase"])
         questionTimeout = $timeout(function () {
           $scope.questionPhase = PHASES.TIMEOUT;
           $scope.answerQuestion(-1);
-        }, 10000 * 1000);
-      }, 1 * 1000);
+        }, 15 * 1000);
+      }, 5 * 1000);
     }
 
     $scope.answerQuestion = function(qIndex) {
