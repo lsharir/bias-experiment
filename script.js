@@ -5,44 +5,7 @@ var app = angular.module("experimentApp", ["firebase"])
     'TIMEOUT': 'TIMEOUT',
     'ANSWERED': 'ANSWERED'
   })
-  .constant('QUESTIONS', [
-    { 
-      unbiased: {
-        text: 'What is more likely to kill you?'
-      },
-      biased: {
-        text: 'What is more likely to kill you',
-        image: 'images/availability_bias.jpg'
-      },
-      answers : [
-         'Your dog', 'Your furniture'
-      ] 
-    },
-    { 
-      unbiased: {
-        text: 'What is more likely to kill you?'
-      },
-      biased: {
-        text: 'What is more likely to kill you',
-        image: 'images/availability_bias.jpg'
-      },
-      answers : [
-         'Your dog', 'Your furniture'
-      ] 
-    },
-    { 
-      unbiased: {
-        text: 'What is more likely to kill you?'
-      },
-      biased: {
-        text: 'What is more likely to kill you',
-        image: 'images/availability_bias.jpg'
-      },
-      answers : [
-         'Your dog', 'Your furniture'
-      ] 
-    }
-  ])
+  .constant('QUESTIONS', QUESTIONS)
   .controller('experimentCtrl', function ($scope, $timeout, $firebaseArray, PHASES, QUESTIONS) {
     var ref = firebase.database().ref().child('results'),
       resultsDatabaseRef = $firebaseArray(ref),
@@ -61,18 +24,22 @@ var app = angular.module("experimentApp", ["firebase"])
     };
 
     function nextQuestion() {
+      // Setting the bias
       $scope.bias = Math.random() > 0.5;
 
       // Question navigation logic
-      if (isNaN($scope.currentQuestion)) {
-        $scope.currentQuestion = 0;
+      if (isNaN($scope.currentQuestionIndex)) {
+        $scope.currentQuestionIndex = 0;
       } else {
-        if ($scope.currentQuestion >= QUESTIONS.length - 1) {
+        if ($scope.currentQuestionIndex >= QUESTIONS.length - 1) {
           return completed();
         }
 
-        $scope.currentQuestion++;
+        $scope.currentQuestionIndex++;
       }
+
+      // Setting the current question
+      $scope.currentQuestion = $scope.bias ? QUESTIONS[$scope.currentQuestionIndex].biased : QUESTIONS[$scope.currentQuestionIndex].unbiased;
 
       // Start with instruction phase
       $scope.questionPhase = PHASES.SHOW_QUESTION_ONLY;
@@ -80,7 +47,7 @@ var app = angular.module("experimentApp", ["firebase"])
       // Go to task phase after 5 seconds
       $timeout(function () {
         // Actually call the task
-        var question = QUESTIONS[$scope.currentQuestion]
+        var question = QUESTIONS[$scope.currentQuestionIndex]
 
         // Updated the question phase
         $scope.questionPhase = PHASES.SHOW_QUESTION_FULL;
@@ -89,8 +56,8 @@ var app = angular.module("experimentApp", ["firebase"])
         questionTimeout = $timeout(function () {
           $scope.questionPhase = PHASES.TIMEOUT;
           $scope.answerQuestion(-1);
-        }, 10 * 1000);
-      }, 5 * 1000);
+        }, 10000 * 1000);
+      }, 1 * 1000);
     }
 
     $scope.answerQuestion = function(qIndex) {

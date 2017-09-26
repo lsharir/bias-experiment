@@ -22,7 +22,7 @@
     };
     firebase.initializeApp(config);
   </script>
-
+  <script src="questions.js"></script>
   <script src="script.js"></script>
 
 
@@ -46,28 +46,25 @@
     </div>
   </div>
 
-  <div class="bias-box">{{bias}}</div>
-
   <div class="screen" ng-if="!completed && began">
     <div class="question-wrapper" ng-if="questionPhase === 'SHOW_QUESTION_ONLY'">
-      <div class="question-text">{{ bias ? QUESTIONS[currentQuestion].biased.text : QUESTIONS[currentQuestion].unbiased.text }}</div>
+      <div class="question-text">{{ currentQuestion.text }}</div>
       <div class="question-content-block">
-        <img ng-if="bias && QUESTIONS[currentQuestion].biased.image" ng-src="{{QUESTIONS[currentQuestion].biased.image}}">
-        <img ng-if="!bias && QUESTIONS[currentQuestion].unbiased.image" ng-src="{{QUESTIONS[currentQuestion].unbiased.image}}">
+        <img class="question-image" ng-if="currentQuestion.image" ng-src="{{currentQuestion.image}}">
       </div>
-      <div class="question-title">Question {{currentQuestion + 1}}/{{QUESTIONS.length}}</div>
+      <div class="question-title">Question {{currentQuestionIndex + 1}}/{{QUESTIONS.length}}</div>
     </div>
 
     <div class="question-wrapper" ng-if="questionPhase === 'SHOW_QUESTION_FULL'">
-        <div class="question-text">{{ bias ? QUESTIONS[currentQuestion].biased.text : QUESTIONS[currentQuestion].unbiased.text }}</div>
+        <div class="question-text">{{ currentQuestion.text }}</div>
         <div class="question-content-block">
             <div class="question-answer" 
-              ng-repeat="answer in QUESTIONS[currentQuestion].answers track by $index" 
+              ng-repeat="answer in currentQuestion.answers track by $index" 
               ng-click="answerQuestion($index)">
               {{answer}}
             </div>
         </div>
-        <div class="question-title">Question {{currentQuestion + 1}}/{{QUESTIONS.length}}</div>
+        <div class="question-title">Question {{currentQuestionIndex + 1}}/{{QUESTIONS.length}}</div>
       </div>
   </div>
 
