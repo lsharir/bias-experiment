@@ -2,15 +2,16 @@ var QUESTIONS = [
   {
     type: 'anchoring',
     unbiased: {
-      text: 'How much would you tip for a drink?',
+      text: 'In what range does the average restaurants\' tipping rate falls in NYC?',
       answers: [
-        '$0', '$0.5', '$1', '$1.25'
+        '10% or less', '10%-15%', '15%-18%', '18% or more'
       ]
     },
     biased: {
-      text: 'How much would you tip for a drink?',
+      text: 'In what range does the average restaurants\' tipping rate falls in NYC?',
+      image: 'images/anchoring_bias.jpg',
       answers: [
-        '$0', '$1', '$2', '$3', '$4'
+        '10% or less', '10%-15%', '15%-18%', '18% or more'
       ]
     }
   },
