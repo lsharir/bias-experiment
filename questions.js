@@ -65,15 +65,15 @@ var QUESTIONS = [
   {
     type: 'gains and losses',
     unbiased: {
-      text: 'A: Roll one die. On 1,2,3,4 you win $20 but on 5,6 you lose $40 (⅓ win, ⅔ lose)\n' +
-            'B: Roll one die. On 1,2,3,4 you lose $20 but on 5,6 you win $40 (⅔ lose, ⅓ win)\n' +
+      text: 'A: Roll one die. On 1,2,3,4 you win $20 but on 5,6 you lose $40\n' +
+            'B: Roll one die. On 1,2,3,4 you lose $20 but on 5,6 you win $40\n' +
             'Which will you prefer to bet?',
       answers: [
         'Bet A', 'Bet B'
       ]
     },
     biased: {
-      text: 'A: Roll one die. On 1,2,3,4 you win $20 but on 5,6 you lose $40 (⅓ win, ⅔ lose)\n' +
+      text: 'A: Roll one die. On 1,2,3,4 you lose $20 but on 5,6 you win $40\n' +
             'B: flip a coin. 50% win a dollar, 50% lose a dollar.\n' +
             'Which will you prefer to bet?',
       answers: [

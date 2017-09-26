@@ -73,6 +73,7 @@ text {
 
 .question-body > span {
   flex-grow: 1;
+  white-space: pre-line;
 }
 
 .nav-bar {
