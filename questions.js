@@ -1,6 +1,6 @@
 var QUESTIONS = [
   {
-    description: 'anchoring',
+    type: 'anchoring',
     unbiased: {
       text: 'How much would you tip for a drink?',
       answers: [
@@ -15,7 +15,7 @@ var QUESTIONS = [
     }
   },
   {
-    description: 'availability',
+    type: 'availability',
     unbiased: {
       text: 'What is more likely to kill you?',
       answers: [
@@ -31,7 +31,7 @@ var QUESTIONS = [
     }
   },
   {
-    description: 'representativeness',
+    type: 'representativeness',
     unbiased: {
       text: 'Alex likes the color green. What is Alex more likely to be?',
       answers: [
@@ -46,7 +46,7 @@ var QUESTIONS = [
     }
   },
   {
-    description: 'optimism and overconfidence',
+    type: 'optimism and overconfidence',
     unbiased: {
       text: 'Is Chris\'s dog cuter than other people\'s dogs?',
       image: 'images/overconfidence_bias.jpg',
@@ -62,24 +62,26 @@ var QUESTIONS = [
     }
   },
   {
-    description: 'gains and losses',
+    type: 'gains and losses',
     unbiased: {
       text: 'A: Roll one die. On 1,2,3,4 you win $20 but on 5,6 you lose $40 (⅓ win, ⅔ lose)\n' +
-            'B: Roll one die. On 1,2,3,4 you lose $20 but on 5,6 you win $40 (⅔ lose, ⅓ win) ',
+            'B: Roll one die. On 1,2,3,4 you lose $20 but on 5,6 you win $40 (⅔ lose, ⅓ win)\n' +
+            'Which will you prefer to bet?',
       answers: [
         'Bet A', 'Bet B'
       ]
     },
     biased: {
       text: 'A: Roll one die. On 1,2,3,4 you win $20 but on 5,6 you lose $40 (⅓ win, ⅔ lose)\n' +
-            'B: flip a coin. 50% win a dollar, 50% lose a dollar.',
+            'B: flip a coin. 50% win a dollar, 50% lose a dollar.\n' +
+            'Which will you prefer to bet?',
       answers: [
-        'Yes', 'No'
+        'Bet A', 'Bet B'
       ]
     }
   },
   {
-    description: 'status quo bias',
+    type: 'status quo bias',
     unbiased: {
       text: 'You are buying a set of pens. Which color would you prefer?',
       image: 'images/status_quo_unbiased.jpg',

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <!-- AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+  <!-- AngularFire -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angularFire/2.3.0/angularfire.min.js"></script>
+  <script>
+    var config = {
+      apiKey: "AIzaSyC1534gzPxYhE5Vr_T4RdYujjD8cGoAIyg",
+      authDomain: "bias-experiment.firebaseapp.com",
+      databaseURL: "https://bias-experiment.firebaseio.com",
+      projectId: "bias-experiment",
+      storageBucket: "",
+      messagingSenderId: "1051246777152"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script src="../questions.js"></script>
+  <script src="pie-chart.js"></script>
+  <script src="script.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css">
+  <title>Results</title>
+</head>
+
+<body ng-app="resultsApp" ng-controller="resultsCtrl">
+  <div class="nav-bar">
+      <button ng-repeat="question in QUESTIONS track by $index" ng-click="setQuestionIndex($index)">{{question.type}}</button>
+  </div>
+  <h1 class="question-type">{{selectedQuestion.type}}</h1>
+  <h2>Biased version - {{results[selectedQuestionIndex].biased.length}} subjects</h2>
+  <div class="question-body">
+    <span>{{selectedQuestion.biased.text}}</span>
+    <img ng-src="{{selectedQuestion.unbiased.image}}">
+  </div>
+  <svg id="biased" class="pies"></svg>
+  <h2>Biased removed version - {{results[selectedQuestionIndex].unbiased.length}} subjects</h2>
+  <div class="question-body">
+    <span>{{selectedQuestion.unbiased.text}}</span>
+    <img ng-src="{{selectedQuestion.unbiased.image}}">
+  </div>
+  <svg id="unbiased" class="pies"></svg>
+
+  <div class="warning" ng-if="!selectedQuestion">Select question type</div>
+</body>
+</html>
+<body>

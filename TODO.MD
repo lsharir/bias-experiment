@@ -1,0 +1,1 @@
+* increase duration to 7 seconds if prefetching fails
