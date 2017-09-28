@@ -102,69 +102,6 @@ function legendBehavior(ofPieGraph, color) {
     .text(function (d) { return d; });
 }
 
-function textLabelBehavior(text) {
-  text
-    .enter()
-    .append("text")
-    .attr("dy", ".35em")
-    .text(function (d) {
-      return (d.data.label + ": " + d.value);
-    });
-
-  text
-    .transition().duration(1000)
-    .attrTween("transform", function (d) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function (t) {
-        var d2 = interpolate(t);
-        var pos = arc.centroid(d2);
-        pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
-        return "translate(" + pos + ")";
-      };
-    })
-    .styleTween("text-anchor", function (d) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function (t) {
-        var d2 = interpolate(t);
-        return midAngle(d2) < Math.PI ? "start" : "end";
-      };
-    })
-    .text(function (d) {
-      return (d.data.label + ": " + d.value);
-    });
-
-
-  text.exit()
-    .remove();
-}
-
-function polylineBehavior(polyline) {
-  polyline.enter()
-    .append("polyline");
-
-  polyline.transition().duration(1000)
-    .attrTween("points", function (d) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function (t) {
-        var d2 = interpolate(t);
-        var pos = arc.centroid(d2);
-        pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-        return [arc.centroid(d2), arc.centroid(d2), pos];
-      };
-    });
-
-  polyline.exit()
-    .remove();
-}
-
-
-
 function change(biased, unbiased) {
 
   biasedPie = d3.select("#biased");
@@ -187,27 +124,4 @@ function change(biased, unbiased) {
 
   legendBehavior(biasedPie, biasedColor);
   legendBehavior(unbiasedPie, unbiasedColor);
-
-
-
-  /* ------- TEXT LABELS -------*/
-
-  // const textBiased = biasedPie.select(".labelName").selectAll("text")
-  //   .data(pie(biased), function (d) { return d.data.label });
-
-  // const textUnbiased = biasedPie.select(".labelName").selectAll("text")
-  //   .data(pie(unbiased), function (d) { return d.data.label });
-
-  // textLabelBehavior(textBiased);
-  // textLabelBehavior(textUnbiased);
-
-  /* ------- SLICE TO TEXT POLYLINES -------*/
-
-  // const polylineBiased = svgPies.select(".lines").selectAll("polyline")
-  //   .data(pie(biased), function (d) { return d.data.label });
-  // const polylineUnbiased = svgPies.select(".lines").selectAll("polyline")
-  //   .data(pie(unbiased), function (d) { return d.data.label });
-
-  // polylineBehavior(polylineBiased);
-  // polylineBehavior(polylineUnbiased);
 };
